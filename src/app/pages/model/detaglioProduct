@@ -1,0 +1,38 @@
+export class DetaglioProduct {
+  id_product:Number;
+  id_user: Number;
+  idCat: Number;
+  name: string;
+  photoName: string;
+  description: string;
+  promotion: Number;
+  selected: Number;
+  available: Number;
+  currentprice: Number;
+
+  constructor(
+    id_product:Number,
+    id_user: Number,
+    idCat: Number,
+    name: string,
+    photoName: string,
+    description: string,
+    promotion: Number,
+    selected: Number,
+    available: Number,
+    currentprice: Number,
+    
+
+  ) {
+    this.id_product=id_product;
+    this.id_user=id_user;
+    this.idCat=idCat;
+    this.name=name;
+    this.photoName=photoName;
+    this.description=description;
+    this.promotion=promotion;
+    this.selected=selected;
+    this.available=available;
+    this.currentprice=currentprice;
+    }
+}

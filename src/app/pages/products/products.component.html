@@ -1,0 +1,193 @@
+<app-header></app-header>
+   
+<div class="container-fluid" >
+   222222222 yesso
+   <div class="col-md-3">
+      <ul class="list-group">
+         <li [ngClass]="currentCategorie==c?'active':''"  (click)="getProductsByCat(c)" class="list-group-item clickable" *ngFor="let c of category">
+         {{c.name}}
+         </li>
+      </ul>
+      <div class="row" style="margin-right: 7px; margin-left: 7px; padding-top: 20px; padding-bottom: 20px;">
+         <div class="col-md-12 mt-2" *ngIf="authService.isAdmin()">
+            <button class="btn btn-primary btn-lg btn-block" (click)="createProduct()" data-toggle="modal" data-target="#exampleModal" style="background-color: #9dc4e7;"> Create New Product </button>
+         </div>
+         <br>
+         <div class="col-md-12 mt-2">
+            <button class="btn btn-primary btn-lg btn-block"   style="background-color: #fed967;"> Segnalazioni </button>
+         </div>
+         <br>
+         <div class="col-md-12 mt-2">
+            <button class="btn btn-primary btn-lg btn-block"  style="background-color: #ecb38e;"> Interrogazioni </button>
+         </div>
+
+         <button (click)="showToaster()">
+            Show Toaster
+        </button>
+
+        <div class="container-fluid py-3">
+         <h1>Angular Toast5555r</h1>
+         
+         <div class="d-grid gap-2 col-4 mx-auto">
+           <button type="button" class="btn btn-sm btn-success" (click)="showSuccess()">Success</button>
+           <button type="button" class="btn btn-sm btn-info" (click)="showInfo()">Info</button>
+           <button type="button" class="btn btn-sm btn-warning" (click)="showWarning()">Warning</button>
+           <button type="button" class="btn btn-sm btn-danger" (click)="showError()">Error</button>
+         </div>
+         </div>
+
+      </div>
+   </div>
+   <div class="col-md-8">
+      <div *ngFor="let p of products" (click)="openModal(p)" data-toggle="modal" data-target="#exampleModal">
+         <div class="col-md-6">
+            <div class="panel panel-default">
+               <div class="panel-heading" (being)="getImageFromService(p.id)">{{p.name}} {{p.id}}</div>
+               <div class="panel-body">
+                  <table>
+                     <tr>
+                        <td rowspan="2">
+                           <img [src]="imgArray[p.id].src"  height="150" width="200">
+                           <br>
+                           <br>
+                        <div *ngIf="authService.isAdmin()">
+                           <p>
+                              <button (click)="onEditPhoto(p)">
+                              <span class="glyphicon glyphicon-edit"></span>
+                              </button>
+                           </p>
+                           <p *ngIf="editPhoto==true && currentProduct==p" class="reduirep">
+                              <input type="file" (change)="onSelectedFile($event)">
+                           </p>
+                           <p>
+                              <button class="btn btn-primary" [disabled]="!onSelectedFile" (click)="upload()">Save File</button>
+                           </p>
+                           <p>
+                              <select matNativeControl required #mySelect (change)="onChange(mySelect.value)" >
+                              <option value=""></option>
+                              <option *ngFor="let tipo of category" [value]="tipo.id">{{tipo.name}}</option>
+                              </select>
+                           </p>
+                        </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td> 
+                           {{p.description}}
+                        </td>
+                     </tr>
+                     <tr>
+                        <td> 
+                           {{p.currentprice|number:'0.2'}}
+                        </td>
+                     </tr>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+ 
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngIf="authService.isAdmin()">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+         <button type="button" class="close" (click)="dismiss()" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <form [formGroup] = "fa" class="form">
+
+                <div class="panel panel-default">
+                     
+                      <div class="panel-heading">
+                        <div class="input-group mb-3">
+                           <div class="input-group-prepend">
+                             <button class="btn btn-outline-secondary" type="button">name</button>
+                           </div>
+                           <input type="text" class="form-control" formControlName="name" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                         </div>
+                        
+                     </div>
+                    
+                     <div class="panel-body" >
+                        <table>
+                           <tr>
+                              <td rowspan="3" > 
+                                 <img [src]="imageToShow"  height="150" width="200" >
+
+                                 <br>
+                                <br>
+                                <p>
+                                    <button >
+                                       <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                 </p>
+                                 <p  class="reduirep" >
+                                    <input type="file" *ngIf="flagCreateProduct" [disabled]="flag_control_file" (change)="onSelectedFile($event)">
+                                    <input type="file" *ngIf="flagEditProduct"  (change)="onSelectedFile($event)">
+
+                                 </p>
+                                 
+                                 <p>
+                                    <button class="btn btn-primary" [disabled]="!onSelectedFile" (click)="upload()" >Save File</button>
+                                 </p>
+        
+                                 <p>
+                                    <select matNativeControl required #mySelect formControlName="idCat" (change)="onChange(mySelect.value)" >
+                                       <option value=""></option>
+                                       <option *ngFor="let tipo of category" [value]="tipo.id">{{tipo.name}}</option>
+                                    </select>
+                                 </p>
+                                 
+                              </td>
+                           </tr>
+                           <tr>
+                              
+                              <td> 
+                                 <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button class="btn btn-outline-secondary" type="button">des</button>
+                                    </div>
+                                    <input type="text" class="form-control" formControlName="description" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                                  </div>
+                              </td>
+                           </tr>
+                           <tr>
+                              
+                              <td> 
+                                 <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button class="btn btn-outline-secondary" type="button">price</button>
+                                    </div>
+                                    <input type="text" class="form-control" formControlName="currentprice"  placeholder="" aria-label="" aria-describedby="basic-addon1">
+                                  </div>
+                              </td>
+                           </tr>
+                        </table>
+                     </div>
+                  </div>
+         </form>
+         <div class="modal-footer">
+            <div class="row">
+               <div class="col-md-3">
+                  <button   (click)="deproduct()" id="closeModal" class="btn btn-primary btn-lg btn-block" style="background-color: #9dc4e7;"> Elimina </button>
+
+               </div>
+               <div class="col-md-9">
+                  <button type="button" class="btn btn-secondary" (click)="dismiss()" data-dismiss="modal" >Close</button>
+                  <button type="button" class="btn btn-primary" (click)="saveProduct()" *ngIf="flagCreateProduct" [disabled]="flag_gestione_create">Save changes</button>
+                  <button type="button" class="btn btn-primary" (click)="UpdateProduct()" *ngIf="flagEditProduct">Save changes</button>
+               </div>
+
+            </div>
+        </div>
+     </div>
+   </div>
+ </div>
+ 

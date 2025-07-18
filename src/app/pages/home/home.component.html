@@ -1,0 +1,211 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="col-md-3">
+      <ul class="list-group">
+        
+        <li class="list-group-item" *ngFor="let c of categories">
+          {{c.name}}
+        </li>
+       
+  
+      </ul>
+    
+    </div>
+    <div class="col-md-9">
+     
+<div >
+  Start editing to see some magic happen :)
+<div>
+<span being (being)="emitterSomething($event)">
+  CLICK MEEEEEEEEEEEEEEEEEE
+</span>
+<div class="col-md-12 mt-2">
+  <button class="btn btn-primary btn-lg btn-block"  style="background-color: #0b1c2a;"> Nuova </button>
+</div>
+</div>
+</div>
+
+    </div>
+  </div>
+
+  <form class="row g-3" *ngIf="true">
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Emai1111111l</label>
+      <input type="email" class="form-control" id="inputEmail4">
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Password</label>
+      <input type="password" class="form-control" id="inputPassword4">
+    </div>
+    <div class="col-12">
+      <label for="inputAddress" class="form-label">Address</label>
+      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+    </div>
+    <div class="col-12">
+      <label for="inputAddress2" class="form-label">Address 2</label>
+      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+    </div>
+    <div class="col-md-6">
+      <label for="inputCity" class="form-label">City</label>
+      <input type="text" class="form-control" id="inputCity">
+    </div>
+    <div class="col-md-4">
+      <label for="inputState" class="form-label">State</label>
+      <select id="inputState" class="form-select">
+        <option selected>Choose...</option>
+        <option>...</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="inputZip" class="form-label">Zip</label>
+      <input type="text" class="form-control" id="inputZip">
+    </div>
+    <div class="col-12">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="gridCheck">
+        <label class="form-check-label" for="gridCheck">
+          Check me out
+        </label>
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+  </form>
+
+
+  <form class="row g-3" *ngIf="false">
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Emai22222l</label>
+      <input type="email" class="form-control" id="inputEmail4">
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Password</label>
+      <input type="password" class="form-control" id="inputPassword4">
+    </div>
+    <div class="col-12">
+      <label for="inputAddress" class="form-label">Address</label>
+      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+    </div>
+    <div class="col-12">
+      <label for="inputAddress2" class="form-label">Address 2</label>
+      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+    </div>
+    <div class="col-md-6">
+      <label for="inputCity" class="form-label">City</label>
+      <input type="text" class="form-control" id="inputCity">
+    </div>
+    <div class="col-md-4">
+      <label for="inputState" class="form-label">State</label>
+      <select id="inputState" class="form-select">
+        <option selected>Choose...</option>
+        <option>...</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="inputZip" class="form-label">Zip</label>
+      <input type="text" class="form-control" id="inputZip">
+    </div>
+    <div class="col-12">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="gridCheck">
+        <label class="form-check-label" for="gridCheck">
+          Check me out
+        </label>
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+  </form>
+
+
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<!--code pour le tableau de angular material en cas de neccesseters-->
+<!--div class="col-md-5">
+      <div class="mat-elevation-z8">
+         <table mat-table [dataSource]="dataSource">
+            
+            <ng-container matColumnDef="id">
+               <th mat-header-cell *matHeaderCellDef> id. </th>
+               <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+               <th mat-header-cell *matHeaderCellDef> Name </th>
+               <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+               <th mat-header-cell *matHeaderCellDef> description </th>
+               <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+            <ng-container matColumnDef="currentprice">
+               <th mat-header-cell *matHeaderCellDef> currentprice </th>
+               <td mat-cell *matCellDef="let element"> {{element.currentprice}} </td>
+            </ng-container>
+            <ng-container matColumnDef="promotion">
+               <th mat-header-cell *matHeaderCellDef> promotion </th>
+               <td mat-cell *matCellDef="let element"> {{element.promotion}} </td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+               <th mat-header-cell *matHeaderCellDef> delete </th>
+               <td mat-cell *matCellDef="let element"> {{element.button}}
+                  <button mat-raised-button type="button" (click)="pathUpload(element.documenti)"matTooltip="Voir plus d'information" class="btn btn-accent btn-link btn-sm btn-just-icon">
+                  <i class="material-icons">
+                  <span style="max-height: 50px; max-width: 10px;">
+                  <img style="max-height: 50px; max-width: 30px;" src="assets/images/Cattura.png" >
+                  </span>
+                  </i>
+                  </button>
+               </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"(click)="openEditModal2(row.id)"></tr>
+         </table>
+         <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons 
+            aria-label="Select page of periodic elements">
+         </mat-paginator>
+      </div>
+    </div>
+ </div!-->
+  
+ <button (click)="showToaster()">
+  Show Toaster
+</button>
+
+<div class="container-fluid py-3">
+  <h1>Angular Toastr</h1>
+  
+  <div class="d-grid gap-2 col-4 mx-auto">
+    <button type="button" class="btn btn-sm btn-success" (click)="showSuccess()">Success</button>
+    <button type="button" class="btn btn-sm btn-info" (click)="showInfo()">Info</button>
+    <button type="button" class="btn btn-sm btn-warning" (click)="showWarning()">Warning</button>
+    <button type="button" class="btn btn-sm btn-danger" (click)="showError()">Error</button>
+  </div>
+  </div>
