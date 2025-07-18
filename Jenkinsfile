@@ -37,6 +37,10 @@ node {
         }*/
 
         // ÉTAPE 2: CONTAINERISATION
+         stage('Image Build') {
+            // Ajoute cette ligne AVANT le build
+           imageBuild(CONTAINER_NAME, CONTAINER_TAG)
+        }
         stage('Docker Build & Push') {
             // Build de l'image Docker
             sh "docker build -t $CONTAINER_NAME:$CONTAINER_TAG -t $CONTAINER_NAME --pull --no-cache ."
@@ -77,6 +81,12 @@ node {
 }
 
 // FONCTIONS UTILITAIRES (identiques à l'original)
+def imageBuild(containerName, tag) {
+    //sh "docker build -t back1 ."
+    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    echo "Image build complete"
+}
+
 def sendEmail(recipients) {
     mail(
         to: recipients,
