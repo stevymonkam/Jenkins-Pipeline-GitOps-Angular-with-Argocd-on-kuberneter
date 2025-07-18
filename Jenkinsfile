@@ -17,7 +17,7 @@ node {
         }
 
         // ÉTAPE 1: BUILD ANGULAR
-        stage('Angular Build') {
+       /* stage('Angular Build') {
             sh 'npm ci'  // Installation des dépendances (plus rapide que npm install)
             
             // Build selon l'environnement
@@ -34,7 +34,7 @@ node {
             
             // Optionnel: Tests unitaires
             // sh 'npm run test:ci'
-        }
+        }*/
 
         // ÉTAPE 2: CONTAINERISATION
         stage('Docker Build & Push') {
