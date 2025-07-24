@@ -181,9 +181,11 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         error("❌ env.USERNAME (DockerHub username) is not set. Make sure you're inside a 'withCredentials' block.")
     }
 
-       if (!targetBranch?.trim()) {
-        error "❌ 'targetBranch' est vide ou non défini. Assure-toi de le passer correctement au pipeline."
-      }
+     if (!targetBranch?.trim()) {
+        error("❌ targetBranch is not set. Make sure you're inside a 'withCredentials' block.")
+    }
+
+     
 
     echo "🔧 Updating GitOps manifests for ${envName} with image: ${dockerUser}/${containerName}:${tag}"
 
