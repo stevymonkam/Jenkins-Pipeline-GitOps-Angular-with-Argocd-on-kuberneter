@@ -181,6 +181,10 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         error("❌ env.USERNAME (DockerHub username) is not set. Make sure you're inside a 'withCredentials' block.")
     }
 
+       if (!targetBranch?.trim()) {
+        error "❌ 'targetBranch' est vide ou non défini. Assure-toi de le passer correctement au pipeline."
+      }
+
     echo "🔧 Updating GitOps manifests for ${envName} with image: ${dockerUser}/${containerName}:${tag}"
 
     sh "git clone https://${gitUser}:${gitPassword}@github.com/stevymonkam/kubernetes-argocd-angular-javasprintboot.git gitops-repo"
@@ -199,6 +203,8 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
             command -v kustomize || { echo '❌ kustomize not found in PATH'; exit 1; }
             kustomize version
         '''
+
+       
         echo "🔍 Switching to GitOps target branch: ${targetBranch}"
 
         echo "🔍 Voici ou il ta erreur..11."
