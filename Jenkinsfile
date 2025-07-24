@@ -35,8 +35,11 @@ node {
         }
 
         stage('Setup Tools') {
+            echo "premier 1"
          steps {
+             echo "premier 2"
           script {
+             echo "premier 3"
             installKustomize()
           }
         }
