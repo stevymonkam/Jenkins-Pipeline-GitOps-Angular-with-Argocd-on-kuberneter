@@ -77,10 +77,10 @@ node {
                 usernamePassword(credentialsId: 'gitops-credentials-argocd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')
             ]) {
                 // Build Docker image
-                imageBuild(CONTAINER_NAME, CONTAINER_TAG)
+                //imageBuild(CONTAINER_NAME, CONTAINER_TAG)
 
                 // Push image
-                pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
+               // pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
 
                 // Update GitOps manifests
                 updateGitOpsManifests(CONTAINER_NAME, CONTAINER_TAG, ENV_NAME, GIT_USERNAME, GIT_PASSWORD)
