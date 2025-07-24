@@ -34,11 +34,23 @@ node {
             checkout scm
         }
 
-    stage('Setup Tools') {
-    echo "premier 1"
-    echo "premier 2"
-    installKustomize()
-} 
+  stage('Setup Tools') {
+    echo "Setup Tools: docker & node & kustomize"
+    def dockerHome = tool 'dockerlatest'
+    def nodeHome = tool 'nodelatest'
+    env.PATH = "${dockerHome}/bin:${nodeHome}/bin:${env.WORKSPACE}/bin:${env.PATH}"
+
+    sh '''
+        # Installer kustomize localement si nécessaire
+        if ! command -v kustomize &> /dev/null; then
+            echo "Installing Kustomize..."
+            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+            mkdir -p bin
+            mv kustomize bin/
+        fi
+    '''
+}
+
 
        // ÉTAPE 2: CONTAINERISATION
         /*stage('Image Build') {
