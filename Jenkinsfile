@@ -199,6 +199,8 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
             command -v kustomize || { echo '❌ kustomize not found in PATH'; exit 1; }
             kustomize version
         '''
+        echo "🔍 Switching to GitOps target branch: ${targetBranch}"
+
         echo "🔍 Voici ou il ta erreur..11."
         // Checkout de la branche GitOps cible
         sh "git checkout -B ${targetBranch}"
