@@ -35,7 +35,7 @@ node {
         }
 
        // ÉTAPE 2: CONTAINERISATION
-        stage('Image Build') {
+        /*stage('Image Build') {
             imageBuild(CONTAINER_NAME, CONTAINER_TAG)
         }
 
@@ -43,7 +43,7 @@ node {
             withCredentials([usernamePassword(credentialsId: 'dockerhubcredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
             }
-        }
+        }*/
 
         // ÉTAPE 3: MISE À JOUR GITOPS POUR ARGOCD
         stage('Update GitOps Repository') {
@@ -103,9 +103,13 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         // Configurer Git
         sh "git config user.name '${env.GIT_AUTHOR_NAME}'"
         sh "git config user.email '${env.GIT_AUTHOR_EMAIL}'"
+
+         // Checkout de la bonne branche
+        sh "git checkout -B ${targetBranch}"
         
         // Mettre à jour le manifeste Kubernetes selon l'environnement
        // Déterminer le chemin selon la structure Kustomize
+   
         def overlayPath = "apps/frontend/overlays/${envName}"
         def kustomizationFile = "${overlayPath}/kustomization.yaml"
         
