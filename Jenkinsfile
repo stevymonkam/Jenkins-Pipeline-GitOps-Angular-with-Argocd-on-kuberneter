@@ -203,6 +203,17 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
             command -v kustomize || { echo '❌ kustomize not found in PATH'; exit 1; }
             kustomize version
         '''
+        sh '''
+            echo "🔍 Affichage du contenu clôné :"
+            pwd
+            ls -la
+            echo "--- apps ---"
+            ls -la apps || echo "Dossier apps inexistant"
+            echo "--- apps/frontend ---"
+            ls -la apps/frontend || echo "Dossier apps/frontend inexistant"
+            echo "--- apps/frontend/overlays ---"
+            ls -la apps/frontend/overlays || echo "Dossier apps/frontend/overlays inexistant"
+        '''
 
        
         echo "🔍 Switching to GitOps target branch: ${targetBranch}"
