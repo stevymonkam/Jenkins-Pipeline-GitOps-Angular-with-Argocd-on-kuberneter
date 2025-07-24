@@ -35,15 +35,15 @@ node {
         }
 
         stage('Setup Tools') {
-            echo "premier 1"
-         steps {
-             echo "premier 2"
-          script {
-             echo "premier 3"
+      steps {
+        echo "premier 1"      // ✅ Déplacé dans steps
+        echo "premier 2"
+        script {
+            echo "premier 3"
             installKustomize()
-          }
         }
-      }    
+    }
+}   
 
        // ÉTAPE 2: CONTAINERISATION
         /*stage('Image Build') {
