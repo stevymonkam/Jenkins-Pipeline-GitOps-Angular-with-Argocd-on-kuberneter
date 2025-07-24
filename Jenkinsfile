@@ -220,7 +220,7 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
 
         echo "🔍 Voici ou il ta erreur..11."
         // Checkout de la branche GitOps cible
-        sh "git checkout -B ${targetBranch}"
+       // sh "git checkout -B ${targetBranch}"
 
         echo "🔍 Voici ou il ta erreur...22"
 
@@ -251,7 +251,7 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         // Commit et push
         sh "git add ."
         sh "git commit -m 'Update ${envName} ${containerName} image to ${tag} - Build #${env.BUILD_NUMBER}' || echo 'ℹ️ Nothing to commit'"
-        sh "git push origin ${targetBranch}"
+        sh "git push origin main"
 
         echo "✅ GitOps repository updated and pushed successfully"
     }
