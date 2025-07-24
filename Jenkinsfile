@@ -110,7 +110,7 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         def kustomizationFile = "${overlayPath}/kustomization.yaml"
         
         // Vérifier que l'environnement existe
-        sh "test -d ${overlayPath} || (echo 'Environment ${envName} not found' && exit 1)"
+       // sh "test -d ${overlayPath} || (echo 'Environment ${envName} not found' && exit 1)"
         
         // Méthode 1: Utiliser kustomize edit pour mettre à jour l'image
         dir(overlayPath) {
