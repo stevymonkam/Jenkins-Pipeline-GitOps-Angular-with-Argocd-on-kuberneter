@@ -180,10 +180,8 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
     if (!dockerUser?.trim()) {
         error("❌ env.USERNAME (DockerHub username) is not set. Make sure you're inside a 'withCredentials' block.")
     }
-
-     if (!targetBranch?.trim()) {
-        error("❌ targetBranch is not set. Make sure you're inside a 'withCredentials' block.")
-    }
+   def targetBranch = 'feature'
+   
 
      
 
