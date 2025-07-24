@@ -34,6 +34,14 @@ node {
             checkout scm
         }
 
+        stage('Setup Tools') {
+         steps {
+          script {
+            installKustomize()
+          }
+        }
+      }    
+
        // ÉTAPE 2: CONTAINERISATION
         /*stage('Image Build') {
             imageBuild(CONTAINER_NAME, CONTAINER_TAG)
@@ -103,6 +111,10 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         // Configurer Git
         sh "git config user.name '${env.GIT_AUTHOR_NAME}'"
         sh "git config user.email '${env.GIT_AUTHOR_EMAIL}'"
+
+
+         // Vérifier que kustomize est disponible
+         sh "kustomize version"
 
          // Checkout de la bonne branche
         sh "git checkout -B ${targetBranch}"
