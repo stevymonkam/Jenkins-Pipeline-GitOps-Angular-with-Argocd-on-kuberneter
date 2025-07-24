@@ -199,9 +199,11 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
             command -v kustomize || { echo '❌ kustomize not found in PATH'; exit 1; }
             kustomize version
         '''
-
+        echo "🔍 Voici ou il ta erreur..11."
         // Checkout de la branche GitOps cible
         sh "git checkout -B ${targetBranch}"
+
+        echo "🔍 Voici ou il ta erreur...22"
 
         // Définir le chemin d’overlay
         def overlayPath = "apps/frontend/overlays/${envName}"
