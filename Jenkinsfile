@@ -112,7 +112,7 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword) {
 }
 
 // NOUVELLES FONCTIONS POUR GITOPS
-def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
+/*def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
     // Cloner le repository GitOps
     sh "git clone https://$gitUser:$gitPassword@github.com/stevymonkam/kubernetes-argocd-angular-javasprintboot.git gitops-repo"
 
@@ -156,7 +156,69 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         
         echo "GitOps repository updated successfully"
     }
+}*/
+
+def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
+    def dockerUser = env.USERNAME
+    if (!dockerUser?.trim()) {
+        error("❌ env.USERNAME (DockerHub username) is not set. Make sure you're inside a 'withCredentials' block.")
+    }
+
+    echo "🔧 Updating GitOps manifests for ${envName} with image: ${dockerUser}/${containerName}:${tag}"
+
+    sh "git clone https://${gitUser}:${gitPassword}@github.com/stevymonkam/kubernetes-argocd-angular-javasprintboot.git gitops-repo"
+
+    dir('gitops-repo') {
+        // Config Git
+        sh "git config user.name '${env.GIT_AUTHOR_NAME ?: "Jenkins CI"}'"
+        sh "git config user.email '${env.GIT_AUTHOR_EMAIL ?: "jenkins@ci.local"}'"
+
+        // Vérifie et exporte kustomize dans le PATH
+        sh '''
+            echo "🔍 Verifying kustomize installation..."
+            if [ -f $HOME/bin/kustomize ]; then
+                export PATH=$HOME/bin:$PATH
+            fi
+            command -v kustomize || { echo '❌ kustomize not found in PATH'; exit 1; }
+            kustomize version
+        '''
+
+        // Checkout de la branche GitOps cible
+        sh "git checkout -B ${targetBranch}"
+
+        // Définir le chemin d’overlay
+        def overlayPath = "apps/frontend/overlays/${envName}"
+        def kustomizationFile = "${overlayPath}/kustomization.yaml"
+
+        // Vérifie que l'overlay existe
+        sh "test -d ${overlayPath} || (echo '❌ Environment overlay ${envName} not found'; ls -la apps/frontend/overlays/; exit 1)"
+
+        // Modifier l’image via kustomize
+        dir(overlayPath) {
+            sh """
+                echo "🛠️ Updating image in ${overlayPath}/kustomization.yaml"
+                if [ -f \$HOME/bin/kustomize ]; then
+                    export PATH=\$HOME/bin:\$PATH
+                fi
+                kustomize edit set image ${containerName}=${dockerUser}/${containerName}:${tag}
+            """
+        }
+
+        // Vérifier les modifications
+        sh "git diff"
+
+        // Afficher le fichier final modifié
+        sh "echo '✅ Updated kustomization.yaml:' && cat ${kustomizationFile}"
+
+        // Commit et push
+        sh "git add ."
+        sh "git commit -m 'Update ${envName} ${containerName} image to ${tag} - Build #${env.BUILD_NUMBER}' || echo 'ℹ️ Nothing to commit'"
+        sh "git push origin ${targetBranch}"
+
+        echo "✅ GitOps repository updated and pushed successfully"
+    }
 }
+
 
 
 def verifyArgoCDDeployment(envName) {
