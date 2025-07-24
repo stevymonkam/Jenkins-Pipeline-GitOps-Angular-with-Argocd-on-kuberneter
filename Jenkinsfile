@@ -173,6 +173,33 @@ def verifyArgoCDDeployment(envName) {
     }
 }
 
+// FONCTION 1: Installation de Kustomize
+def installKustomize() {
+    sh '''
+        # Vérifier si kustomize est déjà installé
+        if ! command -v kustomize &> /dev/null; then
+            echo "Installing Kustomize..."
+            
+            # Télécharger et installer kustomize
+            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+            
+            # Essayer de déplacer vers /usr/local/bin avec sudo
+            if sudo -n true 2>/dev/null; then
+                sudo mv kustomize /usr/local/bin/
+            else
+                # Sinon, utiliser un répertoire local
+                mkdir -p $HOME/bin
+                mv kustomize $HOME/bin/
+                export PATH=$HOME/bin:$PATH
+                echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+            fi
+        fi
+        
+        # Vérifier l'installation
+        kustomize version || echo "Kustomize installed but not in PATH"
+    '''
+}
+
 def getApplicationUrl(envName) {
     if (envName == 'prod') {
         return "https://angular-app.votre-domaine.com"
