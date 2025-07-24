@@ -34,27 +34,7 @@ node {
             checkout scm
         }
 
-        // ÉTAPE 1: BUILD ANGULAR
-        stage('Angular Build') {
-            sh 'npm ci'  // Installation des dépendances
-            
-            // Build selon l'environnement
-            if (ENV_NAME == 'prod') {
-                sh 'npm run build:prod'
-            } else if (ENV_NAME == 'uat') {
-                sh 'npm run build:uat'
-            } else {
-                sh 'npm run build:dev'
-            }
-            
-            // Vérifier que le build a créé les fichiers
-            sh 'ls -la dist/'
-            
-            // Tests unitaires optionnels
-            // sh 'npm run test:ci'
-        }
-
-        // ÉTAPE 2: CONTAINERISATION
+       // ÉTAPE 2: CONTAINERISATION
         stage('Image Build') {
             imageBuild(CONTAINER_NAME, CONTAINER_TAG)
         }
