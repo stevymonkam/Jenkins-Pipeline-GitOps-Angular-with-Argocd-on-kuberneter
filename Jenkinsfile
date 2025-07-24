@@ -34,16 +34,11 @@ node {
             checkout scm
         }
 
-        stage('Setup Tools') {
-      steps {
-        echo "premier 1"      // ✅ Déplacé dans steps
-        echo "premier 2"
-        script {
-            echo "premier 3"
-            installKustomize()
-        }
-    }
-}   
+    stage('Setup Tools') {
+    echo "premier 1"
+    echo "premier 2"
+    installKustomize()
+} 
 
        // ÉTAPE 2: CONTAINERISATION
         /*stage('Image Build') {
