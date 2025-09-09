@@ -286,16 +286,19 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
 
 def verifyArgoCDDeployment(envName) {
     def appName = "angular-${envName}-app"
+    ARGOCD_SERVER = 'http://109.176.198.187:30000'
     
     withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USERNAME', passwordVariable: 'ARGOCD_PASSWORD')]) {
         try {
 
-               sh """
-                    argocd login ${env.ARGOCD_SERVER} \
-                        --username \${ARGOCD_USERNAME} \
-                        --password \${ARGOCD_PASSWORD} \
-                        --insecure
-                """
+               // Login ArgoCD
+                    sh """
+                        echo "🔐 Connexion à ArgoCD: \${ARGOCD_SERVER}"
+                        argocd login \${ARGOCD_SERVER} \
+                            --username \${ARGOCD_USERNAME} \
+                            --password \${ARGOCD_PASSWORD} \
+                            --insecure
+                    """
                     
                     // 🔍 COMMANDE DE DEBUG ICI
                     echo "🔍 Debug: Récupération des infos complètes de l'application"
