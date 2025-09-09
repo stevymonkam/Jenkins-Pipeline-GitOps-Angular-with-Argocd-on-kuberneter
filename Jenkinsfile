@@ -52,8 +52,8 @@ node {
 }
 
 
-      /* // ÉTAPE 2: CONTAINERISATION
-        stage('Image Build') {
+       // ÉTAPE 2: CONTAINERISATION
+        /*stage('Image Build') {
             imageBuild(CONTAINER_NAME, CONTAINER_TAG)
         }
 
@@ -61,20 +61,21 @@ node {
             withCredentials([usernamePassword(credentialsId: 'dockerhubcredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
             }
-        }
+        }*/
 
         // ÉTAPE 3: MISE À JOUR GITOPS POUR ARGOCD
-        stage('Update GitOps Repository') {
+        /*stage('Update GitOps Repository') {
             withCredentials([usernamePassword(credentialsId: 'gitops-credentials-argocd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                 updateGitOpsManifests(CONTAINER_NAME, CONTAINER_TAG, ENV_NAME, GIT_USERNAME, GIT_PASSWORD)
             }
         }*/
 
         // ===== CONTENEURISATION ET GITOPS (ENSEMBLE) =====
-        stage('Build & GitOps Update') {
+        stage('GitOps Update') {
             withCredentials([
                 usernamePassword(credentialsId: 'dockerhubcredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
-                usernamePassword(credentialsId: 'gitops-credentials-argocd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')
+                usernamePassword(credentialsId: 'gitops-credentials-argocd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD'),
+                usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')
             ]) {
                 // Build Docker image
                 //imageBuild(CONTAINER_NAME, CONTAINER_TAG)
@@ -177,6 +178,8 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword) {
 
 def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
     def dockerUser = env.USERNAME
+    def GIT_TOKEN = env.GIT_TOKEN
+    def GIT_USER = env.GIT_USER
     if (!dockerUser?.trim()) {
         error("❌ env.USERNAME (DockerHub username) is not set. Make sure you're inside a 'withCredentials' block.")
     }
@@ -251,7 +254,12 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         // Commit et push
         sh "git add ."
         sh "git commit -m 'Update ${envName} ${containerName} image to ${tag} - Build #${env.BUILD_NUMBER}' || echo 'ℹ️ Nothing to commit'"
-        sh "git push origin main"
+        sh '''
+            git config user.email "stevy.monkam@yahoo.fr"
+            git config user.name "$GIT_USER"
+            git remote set-url origin https://$GIT_USER:$GIT_TOKEN@github.com/stevymonkam/kubernetes-argocd-angular-javasprintboot.git
+            git push origin main
+          '''
 
         echo "✅ GitOps repository updated and pushed successfully"
     }
