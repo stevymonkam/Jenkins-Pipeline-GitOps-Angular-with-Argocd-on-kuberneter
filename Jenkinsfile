@@ -284,7 +284,7 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
 
 
 
-def verifyArgoCDDeployment(envName) {
+/*def verifyArgoCDDeployment(envName) {
     def appName = "angular-${envName}-app"
   
     
@@ -319,6 +319,132 @@ def verifyArgoCDDeployment(envName) {
             
         } catch (Exception e) {
             echo "Warning: Could not verify deployment status: ${e.message}"
+        }
+    }
+}*/
+
+def verifyArgoCDDeployment(envName) {
+    def appName = "angular-${envName}-app"
+    def ARGOCD_SERVER = 'https://109.176.198.187:30000'
+    
+    withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USERNAME', passwordVariable: 'ARGOCD_PASSWORD')]) {
+        try {
+            echo "🔐 Connexion à ArgoCD pour vérifier l'application: ${appName}"
+            
+            // Login ArgoCD avec les variables def
+            sh """
+                echo "🔐 Connexion à ArgoCD: ${ARGOCD_SERVER}"
+                argocd login ${ARGOCD_SERVER} \
+                    --username \${ARGOCD_USERNAME} \
+                    --password \${ARGOCD_PASSWORD} \
+                    --insecure
+            """
+            
+            echo "✅ Connexion ArgoCD réussie"
+            
+            // 🔍 Debug: Afficher les informations complètes de l'application
+            echo "🔍 Debug: Récupération des infos complètes de l'application ${appName}"
+            sh """
+                echo "📋 === INFORMATIONS COMPLÈTES DE L'APPLICATION ==="
+                argocd app get ${appName} -o yaml || echo "❌ Impossible de récupérer les infos de ${appName}"
+            """
+            
+            // Vérifier le statut de santé de l'application
+            echo "🔍 Vérification du statut de santé..."
+            def appStatus = sh(
+                script: "argocd app get ${appName} -o json | jq -r '.status.health.status'", 
+                returnStdout: true
+            ).trim()
+            
+            echo "📊 Statut de santé récupéré: '${appStatus}'"
+            
+            // Vérifier le statut de synchronisation
+            def syncStatus = sh(
+                script: "argocd app get ${appName} -o json | jq -r '.status.sync.status'",
+                returnStdout: true
+            ).trim()
+            
+            echo "🔄 Statut de synchronisation: '${syncStatus}'"
+            
+            // Évaluation du statut de santé
+            switch(appStatus) {
+                case "Healthy":
+                    echo "✅ Déploiement vérifié: Application ${appName} est en bonne santé"
+                    break
+                case "Progressing":
+                    echo "🔄 Application ${appName} en cours de déploiement"
+                    echo "ℹ️  Cela peut prendre quelques minutes..."
+                    break
+                case "Degraded":
+                    echo "⚠️  Attention: Application ${appName} dégradée"
+                    echo "🔍 Vérifiez les logs et les ressources Kubernetes"
+                    break
+                case "":
+                case "null":
+                    echo "❌ Impossible de récupérer le statut de santé pour ${appName}"
+                    echo "🔍 L'application existe-t-elle dans ArgoCD ?"
+                    break
+                default:
+                    echo "❓ Statut de santé inconnu pour ${appName}: '${appStatus}'"
+            }
+            
+            // Évaluation du statut de synchronisation
+            switch(syncStatus) {
+                case "Synced":
+                    echo "✅ Application ${appName} synchronisée avec Git"
+                    break
+                case "OutOfSync":
+                    echo "🔄 Application ${appName} pas synchronisée - Déploiement en attente"
+                    break
+                case "Unknown":
+                    echo "❓ Statut de synchronisation inconnu"
+                    break
+                default:
+                    echo "🔄 Statut de sync: ${syncStatus}"
+            }
+            
+            // Obtenir l'URL de l'application
+            def appUrl = getApplicationUrl(envName)
+            echo "🌐 Application devrait être accessible à: ${appUrl}"
+            
+            // Afficher un résumé
+            echo """
+            📊 === RÉSUMÉ DE LA VÉRIFICATION ===
+            🎯 Application: ${appName}
+            💚 Santé: ${appStatus}
+            🔄 Sync: ${syncStatus}
+            🌐 URL: ${appUrl}
+            🏷️  Environnement: ${envName}
+            ====================================
+            """
+            
+            // Déconnexion propre
+            sh "argocd logout || echo 'Déjà déconnecté'"
+            
+        } catch (Exception e) {
+            echo "❌ Erreur lors de la vérification ArgoCD: ${e.getMessage()}"
+            echo "🔍 Détails de l'erreur:"
+            echo "${e}"
+            
+            // Essayer de récupérer des infos de debug
+            try {
+                echo "🔍 Tentative de récupération d'informations de debug..."
+                sh """
+                    echo "=== Test de connectivité ArgoCD ==="
+                    curl -k -I ${ARGOCD_SERVER} || echo "Impossible de joindre ${ARGOCD_SERVER}"
+                    
+                    echo "=== Version ArgoCD CLI ==="
+                    argocd version --client || echo "ArgoCD CLI indisponible"
+                    
+                    echo "=== Liste des applications ArgoCD (si connecté) ==="
+                    argocd app list || echo "Impossible de lister les applications"
+                """
+            } catch (Exception debugException) {
+                echo "❌ Impossible de récupérer les infos de debug: ${debugException.getMessage()}"
+            }
+            
+            // Ne pas faire échouer le pipeline pour la vérification
+            echo "⚠️  Continuing pipeline despite verification failure..."
         }
     }
 }
