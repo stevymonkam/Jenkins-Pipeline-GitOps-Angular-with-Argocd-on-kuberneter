@@ -325,7 +325,7 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
 
 def verifyArgoCDDeployment(envName) {
     def appName = "angular-${envName}-app"
-    def ARGOCD_SERVER = 'https://109.176.198.187:30000'
+    def ARGOCD_SERVER = 'http://109.176.198.187:30000'
     
     withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USERNAME', passwordVariable: 'ARGOCD_PASSWORD')]) {
         try {
