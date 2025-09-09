@@ -70,7 +70,7 @@ node {
 
 
        // ÉTAPE 2: CONTAINERISATION
-        /*stage('Image Build') {
+        stage('Image Build') {
             imageBuild(CONTAINER_NAME, CONTAINER_TAG)
         }
 
@@ -78,29 +78,22 @@ node {
             withCredentials([usernamePassword(credentialsId: 'dockerhubcredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
             }
-        }*/
+        }
 
         // ÉTAPE 3: MISE À JOUR GITOPS POUR ARGOCD
-        /*stage('Update GitOps Repository') {
+        stage('Update GitOps Repository') {
             withCredentials([usernamePassword(credentialsId: 'gitops-credentials-argocd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                 updateGitOpsManifests(CONTAINER_NAME, CONTAINER_TAG, ENV_NAME, GIT_USERNAME, GIT_PASSWORD)
             }
-        }*/
+        }
 
         // ===== CONTENEURISATION ET GITOPS (ENSEMBLE) =====
         stage('GitOps Update') {
             withCredentials([
-                usernamePassword(credentialsId: 'dockerhubcredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
+                //usernamePassword(credentialsId: 'dockerhubcredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
                 usernamePassword(credentialsId: 'gitops-credentials-argocd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD'),
                 usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')
             ]) {
-                // Build Docker image
-                //imageBuild(CONTAINER_NAME, CONTAINER_TAG)
-
-                // Push image
-               // pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
-
-                // Update GitOps manifests
                 updateGitOpsManifests(CONTAINER_NAME, CONTAINER_TAG, ENV_NAME, GIT_USERNAME, GIT_PASSWORD)
             }
         }
@@ -145,53 +138,6 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword) {
     sh "docker push $dockerUser/$containerName:$tag"
     echo "Image push complete"
 }
-
-// NOUVELLES FONCTIONS POUR GITOPS
-/*def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
-    // Cloner le repository GitOps
-    sh "git clone https://$gitUser:$gitPassword@github.com/stevymonkam/kubernetes-argocd-angular-javasprintboot.git gitops-repo"
-
-    
-    dir('gitops-repo') {
-        // Configurer Git
-        sh "git config user.name '${env.GIT_AUTHOR_NAME}'"
-        sh "git config user.email '${env.GIT_AUTHOR_EMAIL}'"
-
-
-         // Vérifier que kustomize est disponible
-         sh "kustomize version"
-
-         // Checkout de la bonne branche
-        sh "git checkout -B ${targetBranch}"
-        
-        // Mettre à jour le manifeste Kubernetes selon l'environnement
-       // Déterminer le chemin selon la structure Kustomize
-   
-        def overlayPath = "apps/frontend/overlays/${envName}"
-        def kustomizationFile = "${overlayPath}/kustomization.yaml"
-        
-        // Vérifier que l'environnement existe
-       // sh "test -d ${overlayPath} || (echo 'Environment ${envName} not found' && exit 1)"
-        
-        // Méthode 1: Utiliser kustomize edit pour mettre à jour l'image
-        dir(overlayPath) {
-            sh "kustomize edit set image ${containerName}=${dockerUser}/${containerName}:${tag}"
-        }
-
-        sh "git diff"
-
-         // Afficher le contenu du kustomization.yaml pour debug
-        sh "echo '=== Updated kustomization.yaml for ${envName} ==='"
-        sh "cat ${kustomizationFile}"
-        
-        // Commit et push
-        sh "git add ."
-        sh "git commit -m 'Update ${envName} ${containerName} image to ${tag} - Build #${env.BUILD_NUMBER}'"
-        sh "git push origin ${targetBranch}"
-        
-        echo "GitOps repository updated successfully"
-    }
-}*/
 
 def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
     def dockerUser = env.USERNAME
@@ -281,47 +227,6 @@ def updateGitOpsManifests(containerName, tag, envName, gitUser, gitPassword) {
         echo "✅ GitOps repository updated and pushed successfully"
     }
 }
-
-
-
-/*def verifyArgoCDDeployment(envName) {
-    def appName = "angular-${envName}-app"
-  
-    
-    withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USERNAME', passwordVariable: 'ARGOCD_PASSWORD')]) {
-        try {
-
-         def ARGOCD_SERVER = 'https://109.176.198.187:30000'
-               // Login ArgoCD
-                    sh """
-                        echo "🔐 Connexion à ArgoCD: \${ARGOCD_SERVER}"
-                        argocd login \${ARGOCD_SERVER} \
-                            --username \${ARGOCD_USERNAME} \
-                            --password \${ARGOCD_PASSWORD} \
-                            --insecure
-                    """
-                    
-                    // 🔍 COMMANDE DE DEBUG ICI
-                    echo "🔍 Debug: Récupération des infos complètes de l'application"
-                    sh "argocd app get ${appName} -o yaml"
-            // Vérifier le statut de l'application
-            def appStatus = sh(script: "argocd app get ${appName} -o json | jq -r '.status.health.status'", returnStdout: true).trim()
-            
-            if (appStatus == "Healthy") {
-                echo "✅ Déploiement vérifié: Application ${appName} est en bonne santé"
-            } else {
-                echo "⚠️  Attention: Application ${appName} status: ${appStatus}"
-            }
-            
-            // Obtenir l'URL de l'application
-            def appUrl = getApplicationUrl(envName)
-            echo "🌐 Application accessible à: ${appUrl}"
-            
-        } catch (Exception e) {
-            echo "Warning: Could not verify deployment status: ${e.message}"
-        }
-    }
-}*/
 
 def verifyArgoCDDeployment(envName) {
     def appName = "angular-${envName}-app"
@@ -449,29 +354,6 @@ def verifyArgoCDDeployment(envName) {
     }
 }
 
-
-stage('Configure ArgoCD') {
-    steps {
-        script {
-            // Méthode 1: Avec username/password
-            withCredentials([
-                usernamePassword(credentialsId: 'argocd-credentials', 
-                                usernameVariable: 'ARGOCD_USER', 
-                                passwordVariable: 'ARGOCD_PASS')
-            ]) {
-                sh """
-                    argocd login ${env.ARGOCD_SERVER} \
-                        --username \${ARGOCD_USER} \
-                        --password \${ARGOCD_PASS} \
-                        --insecure
-                """
-            }
-            
-            // Maintenant tu peux utiliser argocd normalement
-            def appStatus = sh(script: "argocd app get ${appName} -o json | jq -r '.status.health.status'", returnStdout: true).trim()
-        }
-    }
-}
 // FONCTION 1: Installation de Kustomize
 def installKustomize() {
     sh '''
