@@ -289,6 +289,12 @@ def verifyArgoCDDeployment(envName) {
     
     withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USERNAME', passwordVariable: 'ARGOCD_PASSWORD')]) {
         try {
+
+           
+                    
+                    // 🔍 COMMANDE DE DEBUG ICI
+                    echo "🔍 Debug: Récupération des infos complètes de l'application"
+                    sh "argocd app get ${appName} -o yaml"
             // Vérifier le statut de l'application
             def appStatus = sh(script: "argocd app get ${appName} -o json | jq -r '.status.health.status'", returnStdout: true).trim()
             
