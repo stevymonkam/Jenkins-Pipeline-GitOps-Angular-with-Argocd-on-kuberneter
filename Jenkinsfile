@@ -40,6 +40,23 @@ node {
     def nodeHome = tool 'nodelatest'
     env.PATH = "${dockerHome}/bin:${nodeHome}/bin:${env.WORKSPACE}/bin:${env.PATH}"
 
+      // Installation de jq
+                sh '''
+                    if ! command -v jq &> /dev/null; then
+                        echo "Installing jq..."
+                        apt-get update && apt-get install -y jq
+                    fi
+                '''
+                
+                // Installation d'ArgoCD CLI
+                sh '''
+                    if ! command -v argocd &> /dev/null; then
+                        echo "Installing ArgoCD CLI..."
+                        curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+                        chmod +x /usr/local/bin/argocd
+                    fi
+                '''
+
     sh '''
         # Installer kustomize localement si nécessaire
         if ! command -v kustomize &> /dev/null; then
@@ -109,7 +126,7 @@ node {
 
     } catch (Exception e) {
         currentBuild.result = 'FAILURE'
-        throw e
+        throw e 
     } finally {
         deleteDir()
         sendEmail(EMAIL_RECIPIENTS)
