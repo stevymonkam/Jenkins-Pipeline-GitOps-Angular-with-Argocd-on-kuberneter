@@ -290,7 +290,12 @@ def verifyArgoCDDeployment(envName) {
     withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USERNAME', passwordVariable: 'ARGOCD_PASSWORD')]) {
         try {
 
-           
+               sh """
+                    argocd login ${env.ARGOCD_SERVER} \
+                        --username \${ARGOCD_USERNAME} \
+                        --password \${ARGOCD_PASSWORD} \
+                        --insecure
+                """
                     
                     // 🔍 COMMANDE DE DEBUG ICI
                     echo "🔍 Debug: Récupération des infos complètes de l'application"
@@ -314,6 +319,29 @@ def verifyArgoCDDeployment(envName) {
     }
 }
 
+
+stage('Configure ArgoCD') {
+    steps {
+        script {
+            // Méthode 1: Avec username/password
+            withCredentials([
+                usernamePassword(credentialsId: 'argocd-credentials', 
+                                usernameVariable: 'ARGOCD_USER', 
+                                passwordVariable: 'ARGOCD_PASS')
+            ]) {
+                sh """
+                    argocd login ${env.ARGOCD_SERVER} \
+                        --username \${ARGOCD_USER} \
+                        --password \${ARGOCD_PASS} \
+                        --insecure
+                """
+            }
+            
+            // Maintenant tu peux utiliser argocd normalement
+            def appStatus = sh(script: "argocd app get ${appName} -o json | jq -r '.status.health.status'", returnStdout: true).trim()
+        }
+    }
+}
 // FONCTION 1: Installation de Kustomize
 def installKustomize() {
     sh '''
