@@ -70,7 +70,7 @@ node {
 
 
        // ÉTAPE 2: CONTAINERISATION
-       /* stage('Image Build') {
+       stage('Image Build') {
             imageBuild(CONTAINER_NAME, CONTAINER_TAG)
         }
 
@@ -78,7 +78,7 @@ node {
             withCredentials([usernamePassword(credentialsId: 'dockerhubcredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
             }
-        }*/
+        }
 
         // ÉTAPE 3: MISE À JOUR GITOPS POUR ARGOCD
         /*stage('Update GitOps Repository') {
