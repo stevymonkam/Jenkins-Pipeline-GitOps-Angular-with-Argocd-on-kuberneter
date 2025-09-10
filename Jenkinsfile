@@ -81,11 +81,11 @@ node {
         }
 
         // ÉTAPE 3: MISE À JOUR GITOPS POUR ARGOCD
-        stage('Update GitOps Repository') {
+        /*stage('Update GitOps Repository') {
             withCredentials([usernamePassword(credentialsId: 'gitops-credentials-argocd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                 updateGitOpsManifests(CONTAINER_NAME, CONTAINER_TAG, ENV_NAME, GIT_USERNAME, GIT_PASSWORD)
             }
-        }
+        }*/
 
         // ===== CONTENEURISATION ET GITOPS (ENSEMBLE) =====
         stage('GitOps Update') {
