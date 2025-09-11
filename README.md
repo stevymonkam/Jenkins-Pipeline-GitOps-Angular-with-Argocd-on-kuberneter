@@ -38,8 +38,9 @@ This Jenkins pipeline automates the deployment of an **Angular application** usi
 *Angular application interface deployed in production environment*
 
 #### Development Application
-![Development Application](src/assets/images/dev.PNG.png)
+<img src="src/assets/images/dev.PNG.png" alt="Development Application" width="400"/>
 *Angular application interface deployed in development environment*
+
 
 #### Staging Application (UAT)
 ![Staging Application](https://i.imgur.com/app-staging.png)
