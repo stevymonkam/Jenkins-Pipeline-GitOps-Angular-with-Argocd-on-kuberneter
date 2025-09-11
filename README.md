@@ -30,7 +30,7 @@ This Jenkins pipeline automates the deployment of an **Angular application** usi
 ### 📸 Screenshots
 
 #### Jenkins CI/CD Pipeline
-<img src="src/assets/images/jenkins.PNG.png" alt="Jenkins Pipeline" width="400"/>
+<img src="src/assets/images/jenkins.PNG.png" alt="Jenkins Pipeline" width="600"/>
 *Overview of the Jenkins pipeline with all deployment stages*
 
 #### Production Application
