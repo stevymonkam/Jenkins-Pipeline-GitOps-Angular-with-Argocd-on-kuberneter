@@ -383,11 +383,11 @@ def installKustomize() {
 
 def getApplicationUrl(envName) {
     if (envName == 'prod') {
-        return "https://angular-app.votre-domaine.com"
+        return "http://109.176.198.187:30089"
     } else if (envName == 'uat') {
-        return "https://angular-app-uat.votre-domaine.com"
+        return "http://109.176.198.187:30084"
     } else {
-        return "https://angular-app-dev.votre-domaine.com"
+        return "http://109.176.198.187:30083"
     }
 }
 
@@ -410,13 +410,6 @@ String getEnvName(String branchName) {
         return 'prod'
     }
     return (branchName == 'develop') ? 'uat' : 'dev'
-}
-
-String getHTTPPort(String branchName) {
-    if (branchName == 'main') {
-        return '8083'  // Port pour prod
-    }
-    return (branchName == 'develop') ? '8082' : '8081'  // UAT et DEV
 }
 
 String getTag(String buildNumber, String branchName) {
