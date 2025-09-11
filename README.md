@@ -27,6 +27,11 @@
 
 This Jenkins pipeline automates the deployment of an **Angular application** using a **GitOps** approach with **ArgoCD** for Kubernetes deployment management.
 
+#### Jenkins Pipeline - GitOps Angular with ArgoCD kubernetes
+<img src="src/assets/images/ge.PNG" alt="General Pipeline" width="600"/>
+*Overview of the Jenkins pipeline with all deployment stages*
+
+
 ### 📸 Screenshots
 
 #### Jenkins CI/CD Pipeline
