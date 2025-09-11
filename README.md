@@ -30,11 +30,11 @@ This Jenkins pipeline automates the deployment of an **Angular application** usi
 ### 📸 Screenshots
 
 #### Jenkins CI/CD Pipeline
-![Jenkins Pipeline](https://i.imgur.com/pipeline-jenkins.png)
+<img src="src/assets/images/jenkins.PNG.png" alt="Jenkins Pipeline" width="400"/>
 *Overview of the Jenkins pipeline with all deployment stages*
 
 #### Production Application
-![Production Application](https://i.imgur.com/app-production.png)
+<img src="src/assets/images/prod.PNG.png" alt="Production Application" width="400"/>
 *Angular application interface deployed in production environment*
 
 #### Development Application
@@ -43,7 +43,7 @@ This Jenkins pipeline automates the deployment of an **Angular application** usi
 
 
 #### Staging Application (UAT)
-![Staging Application](https://i.imgur.com/app-staging.png)
+<img src="src/assets/images/uat.PNG.png" alt="Staging Application" width="400"/>
 *Angular application interface deployed in staging/UAT environment*
 
 ### Deployment Flow
