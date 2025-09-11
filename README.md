@@ -27,29 +27,9 @@
 
 This Jenkins pipeline automates the deployment of an **Angular application** using a **GitOps** approach with **ArgoCD** for Kubernetes deployment management.
 
-#### Jenkins Pipeline - GitOps Angular with ArgoCD kubernetes
+## 🏗️ Architecture
 <img src="src/assets/images/ge.PNG" alt="General Pipeline" width="600"/>
 *Overview of the Jenkins pipeline with all deployment stages*
-
-
-### 📸 Screenshots
-
-#### Jenkins CI/CD Pipeline
-<img src="src/assets/images/jenkins.PNG.png" alt="Jenkins Pipeline" width="600"/>
-*Overview of the Jenkins pipeline with all deployment stages*
-
-#### Production Application
-<img src="src/assets/images/prod.PNG.png" alt="Production Application" width="600"/>
-*Angular application interface deployed in production environment*
-
-#### Development Application
-<img src="src/assets/images/dev.PNG.png" alt="Development Application" width="600"/>
-*Angular application interface deployed in development environment*
-
-
-#### Staging Application (UAT)
-<img src="src/assets/images/uat.PNG.png" alt="Staging Application" width="600"/>
-*Angular application interface deployed in staging/UAT environment*
 
 ### Deployment Flow
 ```
@@ -75,6 +55,28 @@ graph LR
 | `main`      | **prod**      | `{BUILD}-prod` | `main` | http://109.176.198.187:30089 |
 | `develop`   | **uat**       | `{BUILD}-uat`  | `develop` | http://109.176.198.187:30084 |
 | `feature/*` | **dev**       | `{BUILD}-dev`  | `feature` | http://109.176.198.187:30083 |
+
+
+### 📸 Screenshots
+
+#### Jenkins CI/CD Pipeline
+<img src="src/assets/images/jenkins.PNG.png" alt="Jenkins Pipeline" width="600"/>
+*Overview of the Jenkins pipeline with all deployment stages*
+
+#### Production Application
+<img src="src/assets/images/prod.PNG.png" alt="Production Application" width="600"/>
+*Angular application interface deployed in production environment*
+
+#### Development Application
+<img src="src/assets/images/dev.PNG.png" alt="Development Application" width="600"/>
+*Angular application interface deployed in development environment*
+
+
+#### Staging Application (UAT)
+<img src="src/assets/images/uat.PNG.png" alt="Staging Application" width="600"/>
+*Angular application interface deployed in staging/UAT environment*
+
+
 
 ## 🔧 Installation and Configuration
 
