@@ -1,7 +1,7 @@
 def ENV_NAME = getEnvName(env.BRANCH_NAME)
 def CONTAINER_NAME = "angular-app-" + ENV_NAME
 def CONTAINER_TAG = getTag(env.BUILD_NUMBER, env.BRANCH_NAME)
-def HTTP_PORT = getHTTPPort(env.BRANCH_NAME)
+//def HTTP_PORT = getHTTPPort(env.BRANCH_NAME)
 def EMAIL_RECIPIENTS = "votre-email@example.com"
 
 // Configuration GitOps pour ArgoCD
