@@ -22,6 +22,7 @@
 - [Monitoring](#-monitoring-and-verification)
 - [Troubleshooting](#%EF%B8%8F-troubleshooting)
 - [Metrics](#-metrics)
+
 🔗 LINK REPOS GITOPS: https://github.com/stevymonkam/kubernetes-argocd-angular-javasprintboot
 
 
