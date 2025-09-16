@@ -442,6 +442,158 @@ Automatic email configuration with:
 4. **Push** to branch (`git push origin feature/improvement`)
 5. **Create** a Pull Request
 
+# 🚀 E-commerce Deployment with Kubernetes, Kustomize and ArgoCD
+
+This project demonstrates the deployment of an e-commerce application composed of a Spring Boot backend and MySQL database, using Kustomize for multi-environment management and ArgoCD for GitOps deployment.
+
+## 🏗️ Architecture
+
+```
+📁 Project Structure
+├── base/
+│   ├── kustomization.yaml
+│   ├── backend-deployment.yaml
+│   ├── backend-service.yaml
+│   ├── mysqldb-deployment.yaml
+│   └── mysqldb-service.yaml
+└── overlays/
+    ├── dev/
+    ├── staging/
+    └── prod/
+        ├── kustomization.yaml
+        ├── service-patch.yaml
+        └── deployment-patch.yaml
+```
+
+## 🛠️ Technologies Used
+
+- **Kubernetes** - Container orchestration
+- **Kustomize** - Multi-environment configuration management
+- **ArgoCD** - Continuous GitOps deployment
+- **Spring Boot** - Backend API
+- **MySQL** - Database
+- **Docker** - Containerization
+
+## 📦 Components
+
+### Backend (Spring Boot)
+- **Port**: 8080
+- **Database**: MySQL
+- **Configuration**: Environment variables via Kustomize
+
+### Database (MySQL)
+- **Version**: 8.0
+- **Port**: 3306 (prod), 3307 (dev), 3309 (staging)
+- **Database**: `ecomerce_prod`
+
+## 🔧 Multi-Environment Configuration
+
+Kustomize enables management of different environments with specific configurations:
+
+| Environment | Database | MySQL Port | Configuration |
+|-------------|----------|------------|---------------|
+| **Dev** | ecomerce_dev | 3307 | Minimal resources |
+| **Staging** | ecomerce_staging | 3309 | Pre-production testing |
+| **Prod** | ecomerce_prod | 3306 | High availability |
+
+## 🚀 Deployment
+
+### With Kubectl
+```bash
+# Production deployment
+kubectl apply -k overlays/prod/
+
+# Status verification
+kubectl get pods -n prod
+kubectl get svc -n prod
+```
+
+### With ArgoCD
+1. ArgoCD Application configuration
+2. Automatic synchronization from Git
+3. Real-time monitoring
+
+## 📊 Monitoring and Verification
+
+```bash
+# Pod status
+kubectl get pods -n prod -l app=backend
+kubectl get pods -n prod -l app=mysqldb
+
+# Application logs
+kubectl logs -f deployment/backend -n prod
+kubectl logs -f deployment/mysqldb -n prod
+
+# Connectivity test
+kubectl exec -it <backend-pod> -n prod -- nc -zv mysqldb 3306
+```
+
+## 🎯 ArgoCD Screenshots
+
+### Successful Deployment
+*Add screenshot of ArgoCD interface showing synchronized application with "Healthy" and "Synced" status*
+
+![ArgoCD Dashboard](./screenshots/Screenshot(509).png)
+
+### Detailed Resource View
+*Screenshot of ArgoCD detailed view showing all components (Deployments, Services, Pods) with their status*
+
+![ArgoCD Resources](./screenshots/Screenshot(591).png)
+
+### GitOps Synchronization
+*Screenshot showing automatic synchronization after Git commit*
+
+![ArgoCD Sync](./screenshots/Screenshot(592).png)
+
+### Deployment Timeline
+*History of deployments and rollbacks via ArgoCD*
+
+![ArgoCD Timeline](./screenshots/Screenshot(593).png)
+
+## 🔍 Troubleshooting
+
+### Database Connection Issues
+```bash
+# Check MySQL service
+kubectl get svc mysqldb -n prod
+
+# Test connectivity
+kubectl exec <backend-pod> -n prod -- nc -zv mysqldb 3306
+```
+
+### Debug Logs
+```bash
+# Backend
+kubectl logs deployment/backend -n prod --previous
+
+# MySQL
+kubectl logs deployment/mysqldb -n prod
+```
+
+## 🏆 Architecture Benefits
+
+✅ **GitOps** - Declarative deployments via Git  
+✅ **Multi-environment** - Centralized configuration with Kustomize  
+✅ **Automatic rollbacks** - Instant rollback capability  
+✅ **Real-time monitoring** - Complete visibility via ArgoCD  
+✅ **Scalability** - Environment-specific resource management  
+✅ **Security** - Environment isolation  
+
+## 📝 Technical Notes
+
+- **Headless Service** initially configured, migrated to standard ClusterIP to resolve connectivity issues
+- **Environment variables** override Spring Boot properties
+- **Kustomize patches** enable per-environment customization without code duplication
+
+## 🔗 Useful Links
+
+- [Kustomize Documentation](https://kustomize.io/)
+- [ArgoCD Documentation](https://argo-cd.readthedocs.io/)
+- [Kubernetes Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/)
+
+---
+*Developed with ❤️ to demonstrate DevOps and GitOps best practices*
+
 ## 📄 License
 
 This project is under MIT License. See the `LICENSE` file for more details.
