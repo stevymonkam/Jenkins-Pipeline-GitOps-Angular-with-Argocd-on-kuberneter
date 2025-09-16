@@ -31,10 +31,6 @@ This Jenkins pipeline automates the deployment of an **Angular application** usi
 <img src="src/assets/images/ge.PNG" alt="General Pipeline" width="600"/>
 *Overview of the Jenkins pipeline with all deployment stages*
 
-### Deployment Flow
-```
-Angular Code → Jenkins → Docker Hub → GitOps Repository → ArgoCD → Kubernetes
-```
 
 🔗 Complete project source code: https://github.com/stevymonkam/kubernetes-argocd-angular-javasprintboot
 This repository contains the full implementation including:
@@ -43,6 +39,11 @@ Kubernetes manifests with Kustomize overlays
 ArgoCD application configurations
 Frontend Angular application
 Backend Spring Boot API
+
+### Deployment Flow
+```
+Angular Code → Jenkins → Docker Hub → GitOps Repository → ArgoCD → Kubernetes
+```
 
 ## 🏗️ Architecture
 
