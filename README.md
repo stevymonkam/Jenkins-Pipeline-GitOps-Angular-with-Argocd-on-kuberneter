@@ -534,7 +534,7 @@ kubectl exec -it <backend-pod> -n prod -- nc -zv mysqldb 3306
 *Add screenshot of ArgoCD interface showing synchronized application with "Healthy" and "Synced" status*
 
 
-<img src="src/assets/images/Screenshot (509).png" alt="Development Application" width="600"/>
+<img src="src/assets/images/Screenshot (590).png" alt="Development Application" width="600"/>
 *Angular application interface deployed in development environment*
 
 
