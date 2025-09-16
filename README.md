@@ -533,22 +533,28 @@ kubectl exec -it <backend-pod> -n prod -- nc -zv mysqldb 3306
 ### Successful Deployment
 *Add screenshot of ArgoCD interface showing synchronized application with "Healthy" and "Synced" status*
 
-![ArgoCD Dashboard](./screenshots/Screenshot(509).png)
+
+<img src="src/assets/images/Screenshot(509).png" alt="Development Application" width="600"/>
+*Angular application interface deployed in development environment*
+
 
 ### Detailed Resource View
 *Screenshot of ArgoCD detailed view showing all components (Deployments, Services, Pods) with their status*
 
-![ArgoCD Resources](./screenshots/Screenshot(591).png)
+<img src="src/assets/images/Screenshot(591).png" alt="Development Application" width="600"/>
+*Angular application interface deployed in development environment*
 
 ### GitOps Synchronization
 *Screenshot showing automatic synchronization after Git commit*
 
-![ArgoCD Sync](./screenshots/Screenshot(592).png)
+<img src="src/assets/images/Screenshot(592).png" alt="Development Application" width="600"/>
+*Angular application interface deployed in development environment*
 
 ### Deployment Timeline
 *History of deployments and rollbacks via ArgoCD*
 
-![ArgoCD Timeline](./screenshots/Screenshot(593).png)
+<img src="src/assets/images/Screenshot(593).png" alt="Development Application" width="600"/>
+*Angular application interface deployed in development environment*
 
 ## 🔍 Troubleshooting
 
